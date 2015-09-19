@@ -14,7 +14,6 @@ hashTable::hashTable(long size){
 		cerr << e.what() << endl;
 		exit(0);
 	}
-	cout << "hashtable size: " << data.capacity() << endl;
 }
 
 long hashTable::getPrime(long size){
@@ -112,7 +111,8 @@ bool hashTable::contains(const string &key){
 }
 
 long hashTable::hash(const string &key){
-	return 0;
+	static long pos = 0;
+	return pos++;
 }
 //test function
 void hashTable::print(){

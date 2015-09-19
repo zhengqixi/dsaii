@@ -43,6 +43,7 @@ class hashTable {
 
 	//test functions
 	void print();
+	
  private:
 
 	class hashItem {

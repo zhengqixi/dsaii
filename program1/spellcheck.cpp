@@ -6,7 +6,7 @@
 #include <fstream>
 #include <cstdlib>
 #include<ctime>
-#define initSize 20 //seems like a good size to start, assuming average dictionary
+#define initSize 50000 //seems like a good size to start, assuming average dictionary
 using namespace std;
 
 spellCheck::spellCheck(){
@@ -51,8 +51,9 @@ bool spellCheck::checkFile(){
 	cout << "Enter name of output file: ";
 	string output;
 	cin >> output;
-	
+	printDictionary();
 }
+
 //test functions
 void spellCheck::printDictionary(){
 	dictionary->print();

@@ -5,14 +5,16 @@ class spellCheck {
 	public:
 		spellCheck();
 		bool checkFile();
+		
+		//test functions
 		void printDictionary();
 		void remove(const std::string &key);
 		void contains(const std::string &key);
 		void insert(const std::string &key);
-		void loadDictionary();
+		
 	private:
 		hashTable *dictionary;
-		
+		void loadDictionary();
 		
 };
 #endif
