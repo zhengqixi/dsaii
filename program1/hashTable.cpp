@@ -14,6 +14,7 @@ hashTable::hashTable(long size){
 		cerr << e.what() << endl;
 		exit(0);
 	}
+	cout << "hashtable size: " << data.capacity() << endl;
 }
 
 long hashTable::getPrime(long size){
@@ -91,7 +92,7 @@ long hashTable::findPos(const string &key){
 			}
 		}
 	}
-	return (data[pos].key.compare(key) == 0) ? pos : -1;
+	return (data[pos].key.compare(key) == 0 && !data[pos].isDeleted) ? pos : -1;
 }
 
 bool hashTable::remove(const string &key){
@@ -113,4 +114,9 @@ bool hashTable::contains(const string &key){
 long hashTable::hash(const string &key){
 	return 0;
 }
-
+//test function
+void hashTable::print(){
+	for (int i = 0; i < data.size(); ++i){
+		cout << data[i].key << endl;
+	}
+}

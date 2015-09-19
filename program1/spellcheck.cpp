@@ -10,7 +10,7 @@
 using namespace std;
 
 spellCheck::spellCheck(){
-	dictionary = new hashTable(initSize); 
+	dictionary = new hashTable(initSize);
 }
 
 void spellCheck::loadDictionary(){
@@ -22,10 +22,14 @@ void spellCheck::loadDictionary(){
 		cerr << "Dictionary not found: " << filename << endl;
 		exit(1);
 	}
+	if (load.eof()) {
+		cerr << "Dictionary is empty" << endl;
+		exit(1);
+	}
 	clock_t t1 = clock();
 	string entry;
 	load >> entry;
-	while (!entry.empty()){
+	while (!load.eof()){
 		dictionary->insert(entry);
 		load >> entry;
 	}
@@ -48,4 +52,26 @@ bool spellCheck::checkFile(){
 	string output;
 	cin >> output;
 	
+}
+//test functions
+void spellCheck::printDictionary(){
+	dictionary->print();
+}
+void spellCheck::contains(const string &key){
+	if (dictionary->contains(key)){
+		cout << "Has key: " << key << endl;
+	} else {
+		cout << "Does not have: " << key << endl;
+	}
+}
+
+void spellCheck::remove(const string &key){
+	if (dictionary->remove(key)){
+		cout << "removed key: " << key << endl;
+	} else {
+		cout << "Key does not exist: " << key << endl;
+	}
+}
+void spellCheck::insert(const string &key){
+	dictionary->insert(key);
 }
