@@ -1,10 +1,11 @@
 #ifndef _SPELLCHECK_H
 #define _SPELLCHECK_H
 #include "hashTable.h"
+#include <fstream>
 class spellCheck {
 	public:
 		spellCheck();
-		bool checkFile();
+		void checkFile();
 		
 		//test functions
 		void printDictionary();
@@ -15,6 +16,7 @@ class spellCheck {
 	private:
 		hashTable *dictionary;
 		void loadDictionary();
-		
+		void convertToSpace(std::fstream &input);
+		void convertToLowerCase(std::string &entry);
 };
 #endif
