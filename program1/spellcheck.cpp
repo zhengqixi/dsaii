@@ -55,22 +55,22 @@ void spellCheck::checkFile(){
 	toWrite.open(output);
 	int lineNumber = 1;
 	string parse;
-	getline(toCheck, parse);
-	stringstream parser(parse);
+	string line;
+	getline(toCheck, line);
+	stringstream parser(line);
 	while (!toCheck.eof()){
-		parser >> parse;
-		while (!parser.eof()){
+		do {
+			parser >> parse;
 			if (parse.size()>20){
 				toWrite << "Long word at line " << lineNumber << ", starts: " << parse.substr(0,20) << endl;
 			} else if(!dictionary->contains(parse)){
 				toWrite << "Unknown word at line " << lineNumber << ": " << parse << endl;
 			}
 			parse.clear();
-			parser >> parse;
-		}
+		} while (!parser.eof());
 		++lineNumber;
-		getline(toCheck, parse);
-		parser.str(parse);
+		getline(toCheck, line);
+		parser.str(line);
 	}
 	toCheck.close();
 	toWrite.close();
