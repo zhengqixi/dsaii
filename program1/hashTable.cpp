@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include "MurmurHash3.h"
 #define loadFactor 0.5 //in case we want to change the load factor
 using namespace std;
 
@@ -111,8 +112,7 @@ bool hashTable::contains(const string &key){
 }
 
 long hashTable::hash(const string &key){
-	static long pos = 0;
-	return pos++;
+	return 0;
 }
 //test function
 void hashTable::print(){

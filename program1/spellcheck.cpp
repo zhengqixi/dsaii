@@ -53,45 +53,51 @@ void spellCheck::checkFile(){
 	cin >> output;
 	ofstream toWrite;
 	toWrite.open(output);
-	int lineNumber = 1;
-	string parse;
 	string line;
-	getline(toCheck, line);
-	stringstream parser(line);
-	while (!toCheck.eof()){
-		do {
-			parser >> parse;
-			if (parse.size()>20){
-				toWrite << "Long word at line " << lineNumber << ", starts: " << parse.substr(0,20) << endl;
-			} else if(!dictionary->contains(parse)){
-				toWrite << "Unknown word at line " << lineNumber << ": " << parse << endl;
-			}
-			parse.clear();
-		} while (!parser.eof());
-		++lineNumber;
+	do {
 		getline(toCheck, line);
-		parser.str(line);
-	}
+		processLine(line, toWrite);
+	} while (!toCheck.eof());
 	toCheck.close();
 	toWrite.close();
 }
 
-void spellCheck::convertToSpace(fstream &input){
-	char check;
-	char space = 32;
-	while (!input.eof()){
-		check = input.peek();
-		if (!(check <= 90 && check >= 65) && !(check <= 122 && check >= 97) && check != 45 && check != 34 && check != 39){
-			input.put(space);
-		} else{
-			input.get(check);
+void spellCheck::processLine(string &line, ofstream &toWrite){
+	static int linenumber = 0;
+	++linenumber;
+	convertToLowerCase(line);
+	int start;
+	string word;
+	start = findNotDelim(line, 0);
+	for (int i = start; i <= line.size(); ++i){
+		if (start == -1){
+			break;
 		}
+		if (!((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 34 || line[i] == 39)){
+			word = line.substr(start, i-start);
+			if (word.size() > 20){
+				toWrite << "Long word at line " << linenumber << ", starts: " << word.substr(0,20) << endl;
+			} else if (!dictionary->contains(word)){
+				toWrite << "Unknown word at line " << linenumber << ": " << word << endl;
+			}
+			i = start = findNotDelim(line, i);
+		}
+		
 	}
 }
 void spellCheck::convertToLowerCase(string &entry){
 	for (int i = 0; i < entry.size(); ++i){
 		entry[i] = tolower(entry[i]);
 	}
+}
+
+int spellCheck::findNotDelim(string &line, int start){
+	for (int i = start; i < line.size(); ++i){
+		if ((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 34 || line[i] == 39){
+			return i;
+		}
+	}
+	return -1;
 }
 //test functions
 void spellCheck::printDictionary(){

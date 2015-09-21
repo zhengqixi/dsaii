@@ -16,7 +16,8 @@ class spellCheck {
 	private:
 		hashTable *dictionary;
 		void loadDictionary();
-		void convertToSpace(std::fstream &input);
+		void processLine(std::string &line, std::ofstream &toWrite);
 		void convertToLowerCase(std::string &entry);
+		int findNotDelim(std::string &line, int start);
 };
 #endif
