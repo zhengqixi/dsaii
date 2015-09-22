@@ -1,50 +1,30 @@
 #ifndef _HASHTABLE_H
 #define _HASHTABLE_H
-
 #include <vector>
 #include <string>
-
 class hashTable {
-
  public:
-
-	hashTable(long size);
-
+	hashTable(int size);
 	bool insert(const std::string &key, void *pv = NULL);
-
 	bool contains(const std::string &key);
-
-	void *getPointer(const std::string &key, bool *b = NULL);
-
-	bool setPointer(const std::string &key, void *pv);
-
+	void *getPointer(const std::string &key, bool *b = NULL); //Not yet implemented
+	bool setPointer(const std::string &key, void *pv); //Not yet implemented
 	bool remove(const std::string &key);
-
-	//test functions
-	void print();
-	
  private:
-
 	class hashItem {
-	public:
+	public: //Default values set. C++11 feature
 		std::string key = "";
 		bool isOccupied = false;
 		bool isDeleted = true;
 		void *pv = NULL;
 	};
-
-	long capacity = 0; // The current capacity of the hash table.
-	long filled = 0; // Number of occupied items in the table.
-
-	std::vector<hashItem> data;
-
-	long hash(const std::string &key);
-
-	long findPos(const std::string &key);
-
+	int capacity = 0; // The current capacity of the hash table.
+	int filled = 0; // Number of occupied items in the table.
+	std::vector<hashItem> data; //Vector that stores the data
+	int hash(const std::string &key);
+	int findPos(const std::string &key);
 	bool rehash();
-
-	static long getPrime(long size);
+	static int getPrime(int size);
 };
 
 #endif

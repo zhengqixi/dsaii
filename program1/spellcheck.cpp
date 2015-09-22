@@ -7,14 +7,14 @@
 #include <cstdlib>
 #include<ctime>
 #include <cctype>
-#include <sstream>
 #define initSize 50000 //seems like a good size to start, assuming average dictionary
 using namespace std;
-
 spellCheck::spellCheck(){
 	dictionary = new hashTable(initSize);
 }
-
+spellCheck::~spellCheck(){
+	delete(dictionary);
+}
 void spellCheck::loadDictionary(){
 	cout << "Enter name of dictionary: ";
 	string filename;
@@ -28,7 +28,7 @@ void spellCheck::loadDictionary(){
 	string entry;
 	load >> entry;
 	while (!load.eof()){
-		convertToLowerCase(entry);
+		convertToLowerCase(entry); //Convert all letters to lowercase before inserting
 		dictionary->insert(entry);
 		load >> entry;
 	}
@@ -37,7 +37,6 @@ void spellCheck::loadDictionary(){
 	cout << "Total time (in seconds) to load dictionary: " << difference << endl;
 	load.close();
 }
-
 void spellCheck::checkFile(){
 	loadDictionary();
 	cout << "Enter name of input file: ";
@@ -54,14 +53,17 @@ void spellCheck::checkFile(){
 	ofstream toWrite;
 	toWrite.open(output);
 	string line;
+	clock_t t1 = clock();
 	do {
-		getline(toCheck, line);
+		getline(toCheck, line); //Get each line of the file, then process it
 		processLine(line, toWrite);
 	} while (!toCheck.eof());
+	clock_t t2 = clock();
+	double difference = ((double)(t2-t1))/CLOCKS_PER_SEC;
+	cout << "Total time (in seconds) to check document: " << difference << endl;
 	toCheck.close();
 	toWrite.close();
 }
-
 void spellCheck::processLine(string &line, ofstream &toWrite){
 	static int linenumber = 0;
 	++linenumber;
@@ -69,55 +71,37 @@ void spellCheck::processLine(string &line, ofstream &toWrite){
 	int start;
 	string word;
 	start = findNotDelim(line, 0);
+	bool containsNumber = false;
 	for (int i = start; i <= line.size(); ++i){
 		if (start == -1){
 			break;
 		}
-		if (!((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 34 || line[i] == 39)){
+		if (line[i]<=57 && line[i]>=48){ //if it has a number, don't check against dictionary
+			containsNumber = true;
+		}
+		if (!((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 39)){
 			word = line.substr(start, i-start);
 			if (word.size() > 20){
 				toWrite << "Long word at line " << linenumber << ", starts: " << word.substr(0,20) << endl;
-			} else if (!dictionary->contains(word)){
+			} else if (!dictionary->contains(word) && !containsNumber){
 				toWrite << "Unknown word at line " << linenumber << ": " << word << endl;
 			}
+			containsNumber = false;
 			i = start = findNotDelim(line, i);
 		}
 		
 	}
 }
-void spellCheck::convertToLowerCase(string &entry){
-	for (int i = 0; i < entry.size(); ++i){
-		entry[i] = tolower(entry[i]);
-	}
-}
-
 int spellCheck::findNotDelim(string &line, int start){
 	for (int i = start; i < line.size(); ++i){
-		if ((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 34 || line[i] == 39){
+		if ((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 39){
 			return i;
 		}
 	}
 	return -1;
 }
-//test functions
-void spellCheck::printDictionary(){
-	dictionary->print();
-}
-void spellCheck::contains(const string &key){
-	if (dictionary->contains(key)){
-		cout << "Has key: " << key << endl;
-	} else {
-		cout << "Does not have: " << key << endl;
+void spellCheck::convertToLowerCase(string &entry){
+	for (int i = 0; i < entry.size(); ++i){
+		entry[i] = tolower(entry[i]);
 	}
-}
-
-void spellCheck::remove(const string &key){
-	if (dictionary->remove(key)){
-		cout << "removed key: " << key << endl;
-	} else {
-		cout << "Key does not exist: " << key << endl;
-	}
-}
-void spellCheck::insert(const string &key){
-	dictionary->insert(key);
 }

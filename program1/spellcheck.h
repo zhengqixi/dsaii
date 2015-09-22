@@ -5,19 +5,13 @@
 class spellCheck {
 	public:
 		spellCheck();
-		void checkFile();
-		
-		//test functions
-		void printDictionary();
-		void remove(const std::string &key);
-		void contains(const std::string &key);
-		void insert(const std::string &key);
-		
+		~spellCheck();
+		void checkFile(); //Actual function to use for file checking
 	private:
 		hashTable *dictionary;
 		void loadDictionary();
-		void processLine(std::string &line, std::ofstream &toWrite);
-		void convertToLowerCase(std::string &entry);
-		int findNotDelim(std::string &line, int start);
+		void processLine(std::string &line, std::ofstream &toWrite); //Process each line of file to be checked
+		int findNotDelim(std::string &line, int start); //gets entry to the next character that starts a valid word, in case of multiple whitespaces
+		void convertToLowerCase(std::string &entry); //Converts everything to lower case, so that the spellchecker isn't case sensitive
 };
 #endif
