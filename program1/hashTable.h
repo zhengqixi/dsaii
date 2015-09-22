@@ -21,7 +21,7 @@ class hashTable {
 	int capacity = 0; // The current capacity of the hash table.
 	int filled = 0; // Number of occupied items in the table.
 	std::vector<hashItem> data; //Vector that stores the data
-	int hash(const std::string &key);
+	unsigned int hash(const std::string &key);
 	int findPos(const std::string &key);
 	bool rehash();
 	static int getPrime(int size);

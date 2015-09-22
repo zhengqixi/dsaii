@@ -83,7 +83,7 @@ void spellCheck::processLine(string &line, ofstream &toWrite){
 			word = line.substr(start, i-start);
 			if (word.size() > 20){
 				toWrite << "Long word at line " << linenumber << ", starts: " << word.substr(0,20) << endl;
-			} else if (!dictionary->contains(word) && !containsNumber){
+			} else if (!containsNumber && !dictionary->contains(word)){
 				toWrite << "Unknown word at line " << linenumber << ": " << word << endl;
 			}
 			containsNumber = false;

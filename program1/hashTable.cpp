@@ -94,9 +94,9 @@ bool hashTable::contains(const string &key){
 	int pos = findPos(key);
 	return (pos != -1) ? true : false;
 }
-int hashTable::hash(const string &key){
+unsigned int hashTable::hash(const string &key){
 	//Hash function found on:http://stackoverflow.com/questions/98153/whats-the-best-hashing-algorithm-to-use-on-a-stl-string-when-using-hash-map, provided by user George V. Reilly and Paul Larson
-	int pos = capacity;
+	unsigned int pos = capacity;
 	const char *s = key.c_str();
 	while (*s){
 		pos *= 101;
