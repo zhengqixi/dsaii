@@ -61,7 +61,7 @@ bool hashTable::rehash(){
 			insert(temp[i].key, temp[i].pv);
 		}
 	}
-	return true;
+	return (data.capacity() == capacity);
 }
 int hashTable::findPos(const string &key){
 	int pos = hash(key);
@@ -91,8 +91,7 @@ bool hashTable::remove(const string &key){
 	}
 }
 bool hashTable::contains(const string &key){
-	int pos = findPos(key);
-	return (pos != -1) ? true : false;
+	return (findPos(key) != -1);
 }
 unsigned int hashTable::hash(const string &key){
 	//Hash function found on:http://stackoverflow.com/questions/98153/whats-the-best-hashing-algorithm-to-use-on-a-stl-string-when-using-hash-map, provided by user George V. Reilly and Paul Larson
