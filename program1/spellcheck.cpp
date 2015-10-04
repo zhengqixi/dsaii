@@ -71,14 +71,12 @@ void spellCheck::processLine(string &line, ofstream &toWrite){
 	int start;
 	string word;
 	start = findNotDelim(line, 0);
-	bool containsNumber = false;
+	bool containsNumber = (line[start]<=57 && line[start]>=48);
 	for (int i = start; i <= line.size(); ++i){
 		if (start == -1){
 			break;
 		}
-		if (line[i]<=57 && line[i]>=48){ //if it has a number, don't check against dictionary
-			containsNumber = true;
-		}
+		containsNumber = containsNumber || (line[i]<=57 && line[i]>=48); //if any character is a number
 		if (!((line[i]<=90 && line[i]>=65) || (line[i]<=122 && line[i]>=97) || (line[i]<=57 && line[i]>=48) || line[i] == 45 || line[i] == 92 || line[i] == 39)){
 			word = line.substr(start, i-start);
 			if (word.size() > 20){
@@ -86,8 +84,8 @@ void spellCheck::processLine(string &line, ofstream &toWrite){
 			} else if (!containsNumber && !dictionary->contains(word)){
 				toWrite << "Unknown word at line " << linenumber << ": " << word << endl;
 			}
-			containsNumber = false;
 			i = start = findNotDelim(line, i);
+			containsNumber = (line[start]<=57 && line[start]>=48); //if start of word is number
 		}
 		
 	}
