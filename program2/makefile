@@ -1,11 +1,17 @@
-test.exe: test.cpp hashTable.o
-	g++ -O3 -std=c++11 -o spell.exe test.cpp hashTable.o 
+useHeap.exe: useHeap.o heap.o hashTable.o
+	g++ -std=c++11 -o useHeap.exe useHeap.o heap.o hashTable.o
+
+useHeap.o: useHeap.cpp
+	g++ -std=c++11 -c useHeap.cpp
+
+heap.o: heap.cpp heap.h
+	g++ -std=c++11 -c heap.cpp
 
 hashTable.o: hashTable.cpp hashTable.h
-	g++ -O3 -std=c++11 -c hashTable.cpp
+	g++ -std=c++11 -c hashTable.cpp
 
 debug:
-	g++ -std=c++11 -g -o testDebug.exe test.cpp hashTable.cpp
+	g++ -g -o useHeapDebug.exe useHeap.cpp heap.cpp hash.cpp
 
 clean:
 	rm -f *.exe *.o *.stackdump *~
@@ -14,3 +20,4 @@ backup:
 	test -d backups || mkdir backups
 	cp *.cpp backups
 	cp *.h backups
+	cp Makefile backups

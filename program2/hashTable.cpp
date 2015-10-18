@@ -28,14 +28,11 @@ int hashTable::getPrime(int size){
 }
 
 bool hashTable::insert(const string &key, void *pv ){
+	if (contains(key)){
+		return false;
+	}
 	int pos = hash(key);
-	while (data[pos].isOccupied && pos < data.capacity()){
-		if (data[pos].key.compare(key)==0 && !data[pos].isDeleted){
-			return false;
-		} else if (data[pos].key.compare(key) == 0 && data[pos].isDeleted){
-			filled--;
-			break;
-		}
+	while (!data[pos].isDeleted && pos < data.capacity()){
 		++pos;
 		if (pos == data.capacity()){
 			pos = 0;
@@ -135,3 +132,4 @@ bool hashTable::setPointer(const string &key, void *pv){
 		return false;
 	}
 }
+

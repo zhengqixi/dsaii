@@ -6,7 +6,7 @@ class hashTable {
  public:
 	hashTable(int size);
 	
-	bool insert(const std::string &key, void *pv = NULL); //Rewrite to prevent double keys
+	bool insert(const std::string &key, void *pv = nullptr); 
 	
 	bool contains(const std::string &key);
 	
@@ -18,11 +18,11 @@ class hashTable {
 	
  private:
 	class hashItem {
-	public: //Default values set. C++11 feature
-		std::string key = "";
-		bool isOccupied = false;
-		bool isDeleted = true;
-		void *pv = NULL;
+		public: //Default values set. C++11 feature
+			std::string key = "";
+			bool isOccupied = false;
+			bool isDeleted = true;
+			void *pv = nullptr;
 	};
 	
 	int capacity = 0; // The current capacity of the hash table.
