@@ -1,3 +1,4 @@
+//Zhengqi
 #include "hashTable.h"
 #include <string>
 #include <vector>
@@ -28,11 +29,17 @@ int hashTable::getPrime(int size){
 }
 
 bool hashTable::insert(const string &key, void *pv ){
-	if (contains(key)){
+	if (key.compare("") == 0){
 		return false;
 	}
 	int pos = hash(key);
-	while (!data[pos].isDeleted && pos < data.capacity()){
+	while (data[pos].isOccupied && pos < data.capacity()){
+		if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){
+			return false;
+		} else if (data[pos].key.compare(key) == 0 && data[pos].isDeleted){
+			--filled;
+			break;
+		}
 		++pos;
 		if (pos == data.capacity()){
 			pos = 0;
@@ -73,10 +80,11 @@ int hashTable::findPos(const string &key){
 	int pos = hash(key);
 	if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){ 
 		return pos;
-	} else if (data[pos].key.compare(key) == 0 && data[pos].isDeleted){
-		return -1;
 	} else {
-		while (data[pos].isOccupied && data[pos].key.compare(key) != 0 && pos < data.capacity()){
+		while (data[pos].isOccupied && pos < data.capacity()){
+			if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){
+				break;
+			}
 			++pos;
 			if (pos == data.capacity()){
 				pos = 0;
@@ -119,7 +127,7 @@ void* hashTable::getPointer(const string &key, bool &b){
 		return data[pos].pv;
 	} else{
 		b = false;
-		return NULL;
+		return nullptr;
 	}
 }
 
