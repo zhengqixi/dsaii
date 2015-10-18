@@ -15,9 +15,3 @@ debug:
 
 clean:
 	rm -f *.exe *.o *.stackdump *~
-
-backup:
-	test -d backups || mkdir backups
-	cp *.cpp backups
-	cp *.h backups
-	cp Makefile backups

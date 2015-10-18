@@ -34,7 +34,7 @@ int heap::insert(const string &id, int key, void *pv){
 
 int heap::setKey(const string &id, int key){
 	bool exists;
-	node* value = static_cast<node*>(mapping->getPointer(id, exists));
+	node* value = static_cast<node*>(mapping->getPointer(id, exists)); //static_cast supposedly better than just (node*)
 	if (!exists){
 		return 1;
 	}
@@ -86,7 +86,7 @@ int heap::deleteMin(string *id, int *key, void *ppData){
 void heap::percolateUp(int posCur){
 	node value = data[posCur];
 	while (posCur > 1){
-		if (value < data[(posCur/2)]){
+		if (value < data[(posCur/2)]){ // Compare against parent
 			data[posCur] = data[(posCur/2)];
 			data[posCur].pos = posCur;
 			if (!mapping->setPointer(data[posCur].id, &data[posCur])){
@@ -114,7 +114,7 @@ void heap::percolateDown(int posCur){
 		} else {
 			smallerKey = (data[2*posCur] > data[2*posCur + 1]) ? (2*posCur + 1) : (2*posCur); //Find the position of the smaller node
 		}
-		if (value > data[smallerKey]){
+		if (value > data[smallerKey]) { //Compare against smaller node
 			data[posCur] = data[smallerKey];
 			data[posCur].pos = posCur;
 			if (!mapping->setPointer(data[posCur].id, &data[posCur])){

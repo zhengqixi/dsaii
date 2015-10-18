@@ -1,3 +1,4 @@
+//Zhengqi Xi
 #ifndef _HEAP_H
 #define _HEAP_H
 #include <vector>
@@ -29,7 +30,7 @@ class heap{
 		std::vector<node> data;
 		void percolateUp(int posCur);
 		void percolateDown(int posCur);
-		int getPos(node *pn);
+		//int getPos(node *pn); will not use as mentioned above. Subject to change 
 		int size = 0;
 		int maxCapacity;	
 };

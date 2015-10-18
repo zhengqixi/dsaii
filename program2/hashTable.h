@@ -1,3 +1,4 @@
+//Zhengqi Xi
 #ifndef _HASHTABLE_H
 #define _HASHTABLE_H
 #include <vector>
@@ -22,14 +23,13 @@ class hashTable {
 			std::string key = "";
 			bool isOccupied = false;
 			bool isDeleted = true;
-			void *pv = nullptr;
+			void *pv = nullptr; //nullptr because C++11. 
 	};
 	
 	int capacity = 0; // The current capacity of the hash table.
 	
 	int filled = 0; // Number of occupied items in the table.
 	
-	int unique = 0;
 	
 	std::vector<hashItem> data; //Vector that stores the data
 	
