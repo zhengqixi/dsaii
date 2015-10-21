@@ -3,3 +3,6 @@
 *.out
 *.txt
 *.stackdump
+*.doc
+*.docx
+*.pdf
