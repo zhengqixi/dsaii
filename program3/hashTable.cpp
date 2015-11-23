@@ -33,7 +33,7 @@ bool hashTable::insert(const string &key, void *pv ){
 		return false;
 	}
 	int pos = hash(key);
-	while (data[pos].isOccupied && pos < data.capacity()){
+	while (data[pos].isOccupied && pos < capacity){
 		if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){
 			return false;
 		} else if (data[pos].key.compare(key) == 0 && data[pos].isDeleted){
@@ -41,7 +41,7 @@ bool hashTable::insert(const string &key, void *pv ){
 			break;
 		}
 		++pos;
-		if (pos == data.capacity()){
+		if (pos == capacity){
 			pos = 0;
 		}
 	}
@@ -81,12 +81,12 @@ int hashTable::findPos(const string &key){
 	if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){ 
 		return pos;
 	} else {
-		while (data[pos].isOccupied && pos < data.capacity()){
+		while (data[pos].isOccupied && pos < capacity){
 			if (data[pos].key.compare(key) == 0 && !data[pos].isDeleted){
 				break;
 			}
 			++pos;
-			if (pos == data.capacity()){
+			if (pos == capacity){
 				pos = 0;
 			}
 		}

@@ -1,3 +1,4 @@
+//Zhengqi Xi
 #include "graph.h"
 #include "hashTable.h"
 #include "heap.h"
@@ -6,6 +7,7 @@
 #include <string>
 #include <cstdlib>
 #include <stack>
+#include <ctime>
 using namespace std;
 
 graph::graph(){
@@ -56,6 +58,7 @@ void graph::dijkstra(){
 			break;
 		}
 	}
+	clock_t t1 = clock();
 	bool existsV1;
 	node* V1 = static_cast<node*>(nodeTable->getPointer(vertex, existsV1));
 	if (!existsV1){
@@ -72,9 +75,9 @@ void graph::dijkstra(){
 	node* nextVertex;
 	while (queue->deleteMin(&vertex, &distance, &nextVertex) == 0){
 		bool b;
-		nextVertex = static_cast<node*>(nodeTable->getPointer(vertex, b)); //Janky workaround that needs fixing
+		nextVertex = static_cast<node*>(nodeTable->getPointer(vertex, b)); 
 		nextVertex->known = true;
-		if (nextVertex->previous == nullptr){
+		if (nextVertex->previous == nullptr){ //If we pop it off and there's nothing leading to it, then there's no way to get to it from the starting node
 			continue;
 		}
 		for(int i = 0; i < nextVertex->edgeList.size(); ++i){
@@ -89,6 +92,8 @@ void graph::dijkstra(){
 			}
 		}
 	}
+	clock_t t2 = clock();
+	cout << "Total time is: " << ((double)(t2-t1))/CLOCKS_PER_SEC << endl;
 	string output;
 	cout << "Please enter name of the output file: ";
 	cin >> output;
@@ -116,4 +121,5 @@ void graph::dijkstra(){
 			readOut << "]" << endl;
 		}
 	}
+	readOut.close();
 }
