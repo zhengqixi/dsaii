@@ -11,7 +11,7 @@ hashTable.o: hashTable.cpp hashTable.h
 	g++ -std=c++11 -c hashTable.cpp
 
 debug:
-	g++ -g -o useGraphDebug.exe useGraph.cpp heap.cpp hash.cpp graph.cpp
+	g++ -std=c++11 -g -o useGraphDebug.exe useGraph.cpp heap.cpp hashTable.cpp graph.cpp
 
 clean:
 	rm -f *.exe *.o *.stackdump *~

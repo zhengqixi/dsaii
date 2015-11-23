@@ -1,6 +1,0 @@
-#include "graph.h"
-using namespace std;
-int main(){
-	graph* shortest = new graph();
-	return 0;
-}
