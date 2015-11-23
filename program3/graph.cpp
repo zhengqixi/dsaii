@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <stack>
 using namespace std;
 
 graph::graph(){
@@ -68,18 +69,25 @@ void graph::dijkstra(){
 		queue->insert(nodeList[i]->name, nodeList[i]->distance, &nodeList[i]);
 	}	
 	int distance;
-	node nextVertex;
+	node* nextVertex;
 	while (queue->deleteMin(&vertex, &distance, &nextVertex) == 0){
-		cout << nextVertex.name << endl;
-		//cout << "At node: " << (*nextVertex)->name << endl;
-		/*(*nextVertex)->known = true;
+		bool b;
+		nextVertex = static_cast<node*>(nodeTable->getPointer(vertex, b)); //Janky workaround that needs fixing
+		nextVertex->known = true;
+		if (nextVertex->previous == nullptr){
+			continue;
+		}
 		for(int i = 0; i < nextVertex->edgeList.size(); ++i){
 	 		if (!nextVertex->edgeList[i].next->known){
-				nextVertex->edgeList[i].next->distance = nextVertex->edgeList[i].cost + distance;
+				int newDistance = nextVertex->edgeList[i].cost + distance; //Possibly risky with overflow involved, but shouldn't be an issue since visited nodes will probably be significantly less than INT_MAX
+				if (newDistance >= nextVertex->edgeList[i].next->distance){
+					continue;
+				}	
+				nextVertex->edgeList[i].next->distance = newDistance;
 				queue->setKey(nextVertex->edgeList[i].next->name, nextVertex->edgeList[i].next->distance);
 				nextVertex->edgeList[i].next->previous = nextVertex;
 			}
-		}*/
+		}
 	}
 	string output;
 	cout << "Please enter name of the output file: ";
@@ -90,13 +98,20 @@ void graph::dijkstra(){
 		if (nodeList[i]->previous == nullptr){
 			readOut << "NO PATH" << endl;
 		} else {
-			readOut << nodeList[i]->distance << " [" ;
+			readOut << nodeList[i]->distance << " ";
+			stack<string> printStack;
+			if (nodeList[i] != V1){
+				printStack.push(nodeList[i]->name);
+			}
 			node* traceBack = nodeList[i]->previous;
-			readOut << traceBack->name;
-			traceBack = traceBack->previous;
 			while (traceBack != V1){
-				readOut << ", " << traceBack->name;
+				printStack.push(traceBack->name);
 				traceBack = traceBack->previous;
+			}
+			readOut << "[" << V1->name;
+			while (!printStack.empty()){
+				readOut << ", " << printStack.top();
+				printStack.pop();
 			}
 			readOut << "]" << endl;
 		}
