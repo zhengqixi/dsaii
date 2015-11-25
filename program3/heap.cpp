@@ -75,7 +75,7 @@ int heap::deleteMin(string *id, int *key, void *ppData){
 		*key = data[1].key;
 	}
 	if (ppData != nullptr){
-		ppData = data[1].pData;
+		*(static_cast<void **> (ppData)) = data[1].pData;
 	}
 	data[1] = data[size];
 	--size;

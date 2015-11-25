@@ -9,10 +9,13 @@
 class graph {
 	public:
 		graph();
-		void dijkstra();
+		void read(std::string &name);
+		void dijkstra(std::string &vertex);
+		bool contains(std::string &vertex);
 	private:
 		class node {
 			private:
+				//Not sure if a triply nested class hiearchy is the best way to go, but it seems logical in my head
 				class edge {
 					public:
 						node* next;
@@ -24,19 +27,16 @@ class graph {
 				node* previous = nullptr;
 				int distance = INT_MAX;
 				std::vector<edge> edgeList;
+				//This one should be fine as an inline...
 				void insertEdge(node* next, int cost = 1){
 					edge newEdge;
 					newEdge.next = next;
 					newEdge.cost = cost;
 					edgeList.push_back(newEdge);
 				}
-				void printEdge(){
-					for (int i = 0; i < edgeList.size(); ++i){
-						std::cout << name << " Links to " << edgeList[i].next->name << " at cost " << edgeList[i].cost << std::endl;
-					}	
-				}
 		};
 		std::vector<node*> nodeList;
 		hashTable* nodeTable;
+		void output(node* V1, double difference);
 };
 #endif

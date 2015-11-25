@@ -12,9 +12,9 @@ using namespace std;
 
 graph::graph(){
 	nodeTable = new hashTable(0);
-	cout << "Please enter the name of the input file: ";
-	string name;
-	cin >> name;
+}
+
+void graph::read(string &name){
 	ifstream readIn(name.c_str());
 	string node1, node2;
 	int distance;
@@ -45,18 +45,11 @@ graph::graph(){
 	}
 	readIn.close();
 }
-void graph::dijkstra(){
+
+void graph::dijkstra(string &vertex){
 	if (nodeList.empty()){
 		cout << "Give up! Go home! You're drunk!" << endl;
 		return;
-	}
-	string vertex;
-	while(1){
-		cout << "Please enter a starting node: " ;
-		cin >> vertex;
-		if (nodeTable->contains(vertex)){
-			break;
-		}
 	}
 	clock_t t1 = clock();
 	bool existsV1;
@@ -75,7 +68,7 @@ void graph::dijkstra(){
 	node* nextVertex;
 	while (queue->deleteMin(&vertex, &distance, &nextVertex) == 0){
 		bool b;
-		nextVertex = static_cast<node*>(nodeTable->getPointer(vertex, b)); 
+		nextVertex = static_cast<node*>(nodeTable->getPointer(vertex, b));//Less than optimal, but I can't figure out why deleteMin refuses to give me the node * even after implementing the fix... Please explain when you return the assignment 
 		nextVertex->known = true;
 		if (nextVertex->previous == nullptr){ //If we pop it off and there's nothing leading to it, then there's no way to get to it from the starting node
 			continue;
@@ -93,7 +86,12 @@ void graph::dijkstra(){
 		}
 	}
 	clock_t t2 = clock();
-	cout << "Total time is: " << ((double)(t2-t1))/CLOCKS_PER_SEC << endl;
+	double difference = ((double)(t2-t1))/CLOCKS_PER_SEC;
+	output(V1, difference);
+}
+
+void graph::output(node* V1, double difference){
+	cout << "Total time is: " << difference << endl;
 	string output;
 	cout << "Please enter name of the output file: ";
 	cin >> output;
@@ -122,4 +120,8 @@ void graph::dijkstra(){
 		}
 	}
 	readOut.close();
+}
+
+bool graph::contains(string &vertex){
+	return nodeTable->contains(vertex);
 }
